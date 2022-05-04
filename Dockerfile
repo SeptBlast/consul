@@ -19,13 +19,13 @@ FROM docker.mirror.hashicorp.services/alpine:3.15 as official
 ARG VERSION
 
 LABEL org.opencontainers.image.authors="Consul Team <consul@hashicorp.com>" \
-      org.opencontainers.image.url="https://www.consul.io/" \
-      org.opencontainers.image.documentation="https://www.consul.io/docs" \
-      org.opencontainers.image.source="https://github.com/hashicorp/consul" \
-      org.opencontainers.image.version=$VERSION \
-      org.opencontainers.image.vendor="HashiCorp" \
-      org.opencontainers.image.title="consul" \
-      org.opencontainers.image.description="Consul is a datacenter runtime that provides service discovery, configuration, and orchestration."
+    org.opencontainers.image.url="https://www.consul.io/" \
+    org.opencontainers.image.documentation="https://www.consul.io/docs" \
+    org.opencontainers.image.source="https://github.com/hashicorp/consul" \
+    org.opencontainers.image.version=$VERSION \
+    org.opencontainers.image.vendor="HashiCorp" \
+    org.opencontainers.image.title="consul" \
+    org.opencontainers.image.description="Consul is a datacenter runtime that provides service discovery, configuration, and orchestration."
 
 # This is the location of the releases.
 ENV HASHICORP_RELEASES=https://releases.hashicorp.com
@@ -44,11 +44,11 @@ RUN set -eux && \
     cd /tmp/build && \
     apkArch="$(apk --print-arch)" && \
     case "${apkArch}" in \
-        aarch64) consulArch='arm64' ;; \
-        armhf) consulArch='arm' ;; \
-        x86) consulArch='386' ;; \
-        x86_64) consulArch='amd64' ;; \
-        *) echo >&2 "error: unsupported architecture: ${apkArch} (see ${HASHICORP_RELEASES}/consul/${VERSION}/)" && exit 1 ;; \
+    aarch64) consulArch='arm64' ;; \
+    armhf) consulArch='arm' ;; \
+    x86) consulArch='386' ;; \
+    x86_64) consulArch='amd64' ;; \
+    *) echo >&2 "error: unsupported architecture: ${apkArch} (see ${HASHICORP_RELEASES}/consul/${VERSION}/)" && exit 1 ;; \
     esac && \
     wget ${HASHICORP_RELEASES}/consul/${VERSION}/consul_${VERSION}_linux_${consulArch}.zip && \
     wget ${HASHICORP_RELEASES}/consul/${VERSION}/consul_${VERSION}_SHA256SUMS && \
@@ -64,7 +64,7 @@ RUN set -eux && \
     gpgconf --kill all && \
     apk del gnupg openssl && \
     rm -rf /root/.gnupg && \
-# tiny smoke test to ensure the binary we downloaded runs
+    # tiny smoke test to ensure the binary we downloaded runs
     consul version
 
 # The /consul/data dir is used by Consul to store state. The agent will be started
@@ -125,29 +125,29 @@ ARG PRODUCT_NAME=$BIN_NAME
 ARG TARGETOS TARGETARCH
 
 LABEL org.opencontainers.image.authors="Consul Team <consul@hashicorp.com>" \
-      org.opencontainers.image.url="https://www.consul.io/" \
-      org.opencontainers.image.documentation="https://www.consul.io/docs" \
-      org.opencontainers.image.source="https://github.com/hashicorp/consul" \
-      org.opencontainers.image.version=$VERSION \
-      org.opencontainers.image.vendor="HashiCorp" \
-      org.opencontainers.image.title="consul" \
-      org.opencontainers.image.description="Consul is a datacenter runtime that provides service discovery, configuration, and orchestration."
+    org.opencontainers.image.url="https://www.consul.io/" \
+    org.opencontainers.image.documentation="https://www.consul.io/docs" \
+    org.opencontainers.image.source="https://github.com/hashicorp/consul" \
+    org.opencontainers.image.version=$VERSION \
+    org.opencontainers.image.vendor="HashiCorp" \
+    org.opencontainers.image.title="consul" \
+    org.opencontainers.image.description="Consul is a datacenter runtime that provides service discovery, configuration, and orchestration."
 
 # Set up certificates and base tools.
 # libc6-compat is needed to symlink the shared libraries for ARM builds
 RUN apk add -v --no-cache \
-		dumb-init \
-		libc6-compat \
-		iptables \
-		tzdata \
-		curl \
-		ca-certificates \
-		gnupg \
-		iputils \ 
-		libcap \
-		openssl \
-		su-exec \
-		jq 
+    dumb-init \
+    libc6-compat \
+    iptables \
+    tzdata \
+    curl \
+    ca-certificates \
+    gnupg \
+    iputils \ 
+    libcap \
+    openssl \
+    su-exec \
+    jq 
 
 # Create a consul user and group first so the IDs get set the same way, even as
 # the rest of this may change over time.
